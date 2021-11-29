@@ -98,13 +98,14 @@ selected edges:
         [
             State('graph', 'elements'),
             State('graph', 'selectedNodeData'),
+            State('graph', 'selectedEdgeData'),
             State('node-name', 'value'),
             State('node-type', 'value'),
             State('edge-name', 'value'),
             State('edge-type', 'value'),
         ]
     )
-    def update_graph_elements(new_node, update_node, delete_node, new_edge, update_edge, delete_edge, elements, selected_nodes, node_name, node_type, edge_name, edge_type):
+    def update_graph_elements(new_node, update_node, delete_node, new_edge, update_edge, delete_edge, elements, selected_nodes, selected_edges, node_name, node_type, edge_name, edge_type):
         elements = elements or []
 
         trigger = triggered_component()
@@ -136,6 +137,20 @@ selected edges:
                             'classes': edge_type,
                         }
                     )
+
+        if 'delete-node-btn' in trigger:
+            selected_node_ids = [n['id'] for n in selected_nodes]
+            elements = [
+                e for e in elements
+                if e['data']['id'] not in selected_node_ids
+            ]
+
+        if 'delete-edge-btn' in trigger:
+            selected_edge_ids = [e['id'] for e in selected_edges]
+            elements = [
+                e for e in elements
+                if e['data']['id'] not in selected_edge_ids
+            ]
 
         return elements, f"{triggered_component()} ({triggered_property()})"
 
