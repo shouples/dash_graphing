@@ -1,0 +1,14 @@
+version: "3.5"
+
+services:
+  main:
+    image: shouples/dash_dev:0.0.1
+    #command: "uvicorn app:server --host 0.0.0.0 --port 8050 --log-level debug --workers 3"
+    command: "python app.py"
+    ports:
+      - 8050:8050
+    volumes:
+      - ./app.py:/apps/app.py
+      - ./callbacks.py:/apps/callbacks.py
+      - ./layout.py:/apps/layout.py
+    working_dir: /apps
